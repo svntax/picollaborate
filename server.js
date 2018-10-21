@@ -18,10 +18,11 @@ for(let i = 0; i < 128 * 128; i++){
 	});
 }
 
-/*app.get("/", function(req, res){
+app.get("/", function(req, res){
 	res.sendFile(__dirname + "/public/index.html");
-});*/
+});
 
+//Directory is specific to the folder structure in the server
 app.get("/picollaborate", function(req, res){
     res.sendFile(__dirname + "/public/index.html");
 });
