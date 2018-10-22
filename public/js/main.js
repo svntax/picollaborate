@@ -12,6 +12,8 @@ const ctxLarge = largeCanvas.getContext("2d");
 ctxLarge.imageSmoothingEnabled = false;
 
 let zoomLevel = 8;
+let currentColor = 11;
+let imageData = ctx.getImageData(0, 0, 128, 128);
 
 //https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRgb(hex) {
@@ -37,7 +39,7 @@ largeCanvas.addEventListener("click", function(event){
 	let px = Math.floor(mousePos.x / zoomLevel);
 	let py = Math.floor(mousePos.y / zoomLevel);
 	//console.log(px + ", " + py);
-	socket.emit("placePixel", {x: px, y: py, color: 11}); //TODO make color based on selection
+	socket.emit("placePixel", {x: px, y: py, color: currentColor});
 });
 
 socket.on("placePixel", function(pixel){
@@ -51,7 +53,7 @@ socket.on("placePixel", function(pixel){
 
 socket.on("board", function(board){	
 	//Directly edit the pixel data
-	let imageData = ctx.getImageData(0, 0, 128, 128);
+	imageData = ctx.getImageData(0, 0, 128, 128);
 	let data = imageData.data;
 	let boardIndex = 0;
 	for(let y = 0; y < 128; y++){
@@ -70,5 +72,28 @@ socket.on("board", function(board){
 		}
 	}
 	ctx.putImageData(imageData, 0, 0);
-	ctxLarge.drawImage(ctx.canvas, 0, 0, 128, 128, 0, 0, 1024, 1024);
+	//ctxLarge.drawImage(ctx.canvas, 0, 0, 128, 128, 0, 0, 1024, 1024);
 });
+
+//Cursor rectangle drawing
+let mouseX = 0;
+let mouseY = 0;
+
+largeCanvas.addEventListener("mousemove", updateMousePosition, false);
+
+function updateMousePosition(event){
+	let cursorPos = getCursorPosition(this, event);
+	mouseX = cursorPos.x;
+	mouseY = cursorPos.y;
+}
+
+function update(){
+	ctxLarge.drawImage(ctx.canvas, 0, 0, 128, 128, 0, 0, 128 * zoomLevel, 128 * zoomLevel);
+	
+	ctxLarge.fillStyle = COLOR_PALETTE[currentColor];
+	ctxLarge.fillRect(Math.floor(mouseX / zoomLevel) * zoomLevel, Math.floor(mouseY / zoomLevel) * zoomLevel, zoomLevel, zoomLevel);
+	
+	requestAnimationFrame(update);
+}
+
+update();
