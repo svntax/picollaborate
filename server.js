@@ -32,7 +32,7 @@ io.on("connection", function(socket){
 	socket.emit("board", {data: pixelData});
 	
 	socket.on("placePixel", function(pixel){
-		if(pixel && pixel.x && pixel.y){
+		if(pixel){
 			if(0 <= pixel.x && pixel.x <= 127 && 0 <= pixel.y && pixel.y <= 127){
 				let index = pixel.x + pixel.y * 128;
 				pixelData[index] = pixel.color;

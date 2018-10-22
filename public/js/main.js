@@ -15,6 +15,21 @@ let zoomLevel = 8;
 let currentColor = 11;
 let imageData = ctx.getImageData(0, 0, 128, 128);
 
+function initPalette(){
+	for(let i = 0; i < COLOR_PALETTE.length; i++){
+		let btn = document.createElement("div");
+		btn.className = "paletteButton";
+		btn.style.backgroundColor = COLOR_PALETTE[i];
+		btn.setAttribute("colorIndex", i);
+		btn.addEventListener("click", function(event){
+			currentColor = this.getAttribute("colorIndex");
+		});
+		document.getElementById("palette").appendChild(btn);
+	}
+}
+
+initPalette();
+
 //https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
