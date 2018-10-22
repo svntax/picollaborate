@@ -33,7 +33,7 @@ io.on("connection", function(socket){
 	
 	socket.on("placePixel", function(pixel){
 		if(pixel){
-			if(0 <= pixel.x && pixel.x <= 127 && 0 <= pixel.y && pixel.y <= 127){
+			if(0 <= pixel.x && pixel.x <= 127 && 0 <= pixel.y && pixel.y <= 127 && 0 <= pixel.color && pixel.color <= 15){
 				let index = pixel.x + pixel.y * 128;
 				pixelData[index] = pixel.color;
 				redisClient.send_command("bitfield", ["pixelCanvas", "SET", "u4", "#" + index, pixel.color], function(error, result){
