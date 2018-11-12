@@ -1,6 +1,5 @@
-#palette {
-	position: absolute;
-	left: 5%;
+body {
+	background-color: #eeeeee;
 }
 
 .paletteButton {
@@ -9,12 +8,30 @@
 }
 
 #canvasArea {
-	-webkit-transform-origin: top center;
-	-moz-transform-origin: top center;
-	transform-origin: top center;
-	text-align: center;
+	display: grid;
+	grid-template-columns: 1028px 52px;
 }
 
 #pixelCanvas {
 	display: none;
+}
+
+@media only screen and (max-width: 1076px) {
+	#canvasArea {
+		grid-template-columns: 1028px;
+		grid-template-rows: 1028px 258px;
+	}
+	
+    #palette {
+		display: inline-grid;
+		grid-template-columns: repeat(8, 128px);
+		grid-template-rows: 50% 50%;
+		justify-items: center;
+		align-items: center;
+	}
+	
+	.paletteButton {
+		width: 100px;
+		height: 100px;
+	}
 }
